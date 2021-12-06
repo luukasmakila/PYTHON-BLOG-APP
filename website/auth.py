@@ -1,4 +1,8 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
+from flask_login import login_user, logout_user, login_required
+from . import db
+from .models import User
+from werkzeug.security import generate_password_hash, check_password_hash
 
 #routes related to authentication
 
@@ -35,22 +39,26 @@ def sign_up():
         password = request.form.get("password")
         password2 = request.form.get("password2")
 
-        database = ["luukas@gmail.com", "ltd"]
+        email_exists = User.query.filter_by(email=email).first()
+        username_exists = User.query.filter_by(username=username).first()
 
-        if email in database:
+        if email_exists:
             flash("Email already exits!", category="error")
-        if username in database:
+        elif username_exists:
             flash("Username already exits!", category="error")
-        if len(email) < 7:
+        elif len(email) < 7:
             flash("Email is too short!", category="error")
-        if len(username) < 3:
+        elif len(username) < 3:
             flash("Username is too short!", category="error")
-        if len(password) < 5:
+        elif len(password) < 5:
             flash("Password is too short!", category="error")
-        if password != password2:
+        elif password != password2:
             flash("Passwords don't match!", category="error")
         else:
-            #add user to the database
+            newUser = User(email=email, username=username, password=generate_password_hash(password, method="sha256"))
+            db.session.add(newUser) #makes user ready to be added to the DB
+            db.session.commit() #commits the adding of the user to the DB
             flash("User created!", category="success")
+            return redirect(url_for("views.home"))
     
     return render_template("sign_up.html")
