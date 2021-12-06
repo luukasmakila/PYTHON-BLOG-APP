@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from . import db
 from .models import User
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -14,20 +14,24 @@ def login():
         email = request.form.get("email")
         password = request.form.get("password")
 
-        database = ["luukas@gmail.com", "ltd"]
+        user = User.query.filter_by(email=email).first()
 
-        if email not in database:
-            flash("No users with the given email!", category="error")
-        if not password: #if the password is not correct
-            flash("Wrong password!", category="error")
+        if user:
+            if check_password_hash(user.password, password):
+                flash("Logged in!", category="success")
+                login_user(user, remember=True)
+                return redirect(url_for("views.home"))
+            else:
+                flash("Password is incorrect!", category="success")
         else:
-            #log the user in
-            flash("Successfully logged in!", category="success")
-    
+            flash("Email does not exist!", category="error")
     return render_template("login.html")
 
 @auth.route("/logout")
+@login_required
 def logout():
+    logout_user()
+    flash("Logged out!", category="success")
     return redirect(url_for("views.home")) #redirects user to the home page
 
 @auth.route("/sign-up", methods=["GET", "POST"])
@@ -58,6 +62,7 @@ def sign_up():
             newUser = User(email=email, username=username, password=generate_password_hash(password, method="sha256"))
             db.session.add(newUser) #makes user ready to be added to the DB
             db.session.commit() #commits the adding of the user to the DB
+            login_user(newUser, remember=True)
             flash("User created!", category="success")
             return redirect(url_for("views.home"))
     
