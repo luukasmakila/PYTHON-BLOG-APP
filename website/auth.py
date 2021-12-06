@@ -6,18 +6,19 @@ auth = Blueprint("auth", __name__)
 
 @auth.route("/login", methods=["GET", "POST"])
 def login():
-    email = request.form.get("email")
-    password = request.form.get("password")
+    if request.method == "POST":
+        email = request.form.get("email")
+        password = request.form.get("password")
 
-    database = ["luukas@gmail.com", "ltd"]
+        database = ["luukas@gmail.com", "ltd"]
 
-    if email not in database:
-        flash("No users with the given email!", category="error")
-    if not password: #if the password is not correct
-        flash("Wrong password!", category="error")
-    else:
-        #log the user in
-        flash("Successfully logged in!", category="success")
+        if email not in database:
+            flash("No users with the given email!", category="error")
+        if not password: #if the password is not correct
+            flash("Wrong password!", category="error")
+        else:
+            #log the user in
+            flash("Successfully logged in!", category="success")
     
     return render_template("login.html")
 
