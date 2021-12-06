@@ -7,4 +7,4 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(100), unique=True)
     username = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(200))
-    date = db.Column(db.date(Timezone=True), default = func.now())
+    date = db.Column(db.DateTime(timezone=True), default = func.now())
