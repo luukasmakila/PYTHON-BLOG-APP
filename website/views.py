@@ -28,3 +28,19 @@ def create_post():
             return redirect(url_for("views.home"))
 
     return render_template("create_post.html", user=current_user)
+
+@views.route("/delete-post/<id>")
+@login_required
+def delete_post(id):
+    post = Post.query.filter_by(id=id).first()
+
+    if not post:
+        flash("Post doesn't exist!", category="error")
+    elif current_user.id != post.creator:
+        flash("You are not the creator of this post!", category="error")
+    else:
+        db.session.delete(post)
+        db.session.commit()
+        flash("Post deleted!", category="success")
+
+    return redirect(url_for("views.home"))
