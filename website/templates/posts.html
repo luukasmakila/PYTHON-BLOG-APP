@@ -1,10 +1,7 @@
-{% extends "base.html" %}
-
-{% block title %}Home{% endblock %}
+{% extends "base.html" %} {% block title %}{{username}}'s posts{% endblock %}
 
 {% block content %}
-<br/>
-<h1 align="center">Posts</h1>
+<h1 align="center">{{username}}'s Posts</h1>
 <div id="posts">
     {% for post in posts %}
         <div class="card border-dark">
@@ -27,8 +24,5 @@
         </div>
         <br/>
     {% endfor %}
-    <div align="center">
-        <a href="/create-post"><button type="button" class="btn btn-primary btn-lg">Create a Post</button></a>
-    </div>
 </div>
 {% endblock %}
