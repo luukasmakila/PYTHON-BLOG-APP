@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask.scaffold import F
 from flask_login import login_required, current_user
-from . models import Post, User, Comment, Like
+from . models import Post, User, Comment, Like, Dislike
 from . import db
 
 #routes related to views
@@ -97,14 +97,37 @@ def delete_comment(id):
 def like(post_id):
     post = Post.query.filter_by(id=post_id)
     like = Like.query.filter_by(creator=current_user.id, post_id=post_id).first()
+    dislike = Dislike.query.filter_by(creator=current_user.id, post_id=post_id).first()
 
     if not post:
         flash("Post doesn't exist!", category="error")
+    elif dislike:
+        flash("Can not dislike a post you've already liked!", category="error")
     elif like:
         db.session.delete(like)
         db.session.commit()
     else:
         like = Like(creator=current_user.id, post_id=post_id)
         db.session.add(like)
+        db.session.commit()
+    return redirect(url_for("views.home"))
+
+@views.route("/dislike-post/<post_id>", methods=["GET"])
+@login_required
+def dislike(post_id):
+    post = Post.query.filter_by(id=post_id)
+    dislike = Dislike.query.filter_by(creator=current_user.id, post_id=post_id).first()
+    like = Like.query.filter_by(creator=current_user.id, post_id=post_id).first()
+
+    if not post:
+        flash("Post doesn't exist!", category="error")
+    elif like:
+        flash("Can not dislike a post you've already liked!", category="error")
+    elif dislike:
+        db.session.delete(dislike)
+        db.session.commit()
+    else:
+        dislike = Dislike(creator=current_user.id, post_id=post_id)
+        db.session.add(dislike)
         db.session.commit()
     return redirect(url_for("views.home"))

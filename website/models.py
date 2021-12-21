@@ -11,6 +11,7 @@ class User(db.Model, UserMixin):
     posts = db.relationship("Post", backref="user", passive_deletes=True) #refereneces all of the users posts, one to many relationship
     comments = db.relationship("Comment", backref="user", passive_deletes=True)
     likes = db.relationship("Like", backref="user", passive_deletes=True)
+    dislikes = db.relationship("Dislike", backref="user", passive_deletes=True)
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -19,6 +20,7 @@ class Post(db.Model):
     creator = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="CASCADE"), nullable=False) #when user is deleted all of their posts will be deleted aswell.
     comments = db.relationship("Comment", backref="post", passive_deletes=True)
     likes = db.relationship("Like", backref="post", passive_deletes=True)
+    dislikes = db.relationship("Dislike", backref="post", passive_deletes=True)
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -28,6 +30,12 @@ class Comment(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey("post.id", ondelete="CASCADE"), nullable=False)
 
 class Like(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    creator = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey("post.id", ondelete="CASCADE"), nullable=False)
+    date = db.Column(db.DateTime(timezone=True), default = func.now())
+
+class Dislike(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     creator = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey("post.id", ondelete="CASCADE"), nullable=False)

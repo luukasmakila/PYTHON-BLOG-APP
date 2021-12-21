@@ -17,6 +17,14 @@
                 {% else %}
                 <a href="/like-post/{{post.id}}"><i class="far fa-thumbs-up"></i></a>
                 {% endif %}
+
+                {{post.dislikes|length}}
+                {% if user.id in post.dislikes|map(attribute="creator")|list %}
+                <a href="/dislike-post/{{post.id}}"><i class="fas fa-thumbs-down"></i></a>
+                {% else %}
+                <a href="/dislike-post/{{post.id}}"><i class="far fa-thumbs-down"></i></a>
+                {% endif %}
+                
                 {% if user.id == post.creator %}
                 <div class="btn-group">
                     <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
