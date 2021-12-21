@@ -9,7 +9,7 @@
                 <a href="/posts/{{post.user.username}}">{{post.user.username}}</a>
                 {% if user.id == post.creator %}
                 <div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+                    <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
                     </button>
                     <ul class="dropdown-menu">
                         <li><a href="/delete-post/{{post.id}}" class="dropdown-item">Delete Post</a></li>
@@ -32,7 +32,7 @@
                                     <small class="text-muted">{{comment.date}}</small>
                                     {% if user.id == comment.creator or user.id == post.creator %}
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+                                        <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
                                         </button>
                                         <ul class="dropdown-menu">
                                             <li><a href="/delete-comment/{{comment.id}}" class="dropdown-item">Delete Comment</a></li>
@@ -57,7 +57,7 @@
                 </p>
                 <form class="input-group mb-3" method="post" action="/create-comment/{{post.id}}">
                     <input type="text" id="text" name="text" class="form-control" placeholder="Comment">
-                    <button type="submit" class="btn btn-primary">Comment</button>
+                    <button type="submit" class="btn btn-secondary">Comment</button>
                 </form>
             </div>
             <div class="card-footer text-muted">{{post.date}}</div>
