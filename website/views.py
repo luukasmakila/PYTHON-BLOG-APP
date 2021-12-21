@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask.scaffold import F
 from flask_login import login_required, current_user
-from . models import Post, User, Comment
+from . models import Post, User, Comment, Like
 from . import db
 
 #routes related to views
@@ -89,4 +90,21 @@ def delete_comment(id):
         db.session.commit()
         flash("Comment deleted!", category="success")
 
+    return redirect(url_for("views.home"))
+
+@views.route("/like-post/<post_id>", methods=["GET"])
+@login_required
+def like(post_id):
+    post = Post.query.filter_by(id=post_id)
+    like = Like.query.filter_by(creator=current_user.id, post_id=post_id).first()
+
+    if not post:
+        flash("Post doesn't exist!", category="error")
+    elif like:
+        db.session.delete(like)
+        db.session.commit()
+    else:
+        like = Like(creator=current_user.id, post_id=post_id)
+        db.session.add(like)
+        db.session.commit()
     return redirect(url_for("views.home"))

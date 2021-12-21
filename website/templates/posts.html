@@ -7,6 +7,15 @@
         <div class="card border-dark">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <a href="/posts/{{post.user.username}}">{{post.user.username}}</a>
+                <div>
+                
+                {{post.likes|length}}
+                {% if user.id in post.likes|map(attribute="creator")|list %}
+                <a href="/like-post/{{post.id}}"><i class="fas fa-thumbs-up"></i></a>
+                {% else %}
+                <a href="/like-post/{{post.id}}"><i class="far fa-thumbs-up"></i></a>
+                {% endif %}
+
                 {% if user.id == post.creator %}
                 <div class="btn-group">
                     <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
@@ -16,6 +25,7 @@
                     </ul>
                 </div>
                 {% endif %}
+                </div>
             </div>
             <div class="card-body">
                 <div class="card-text">{{post.text}}</div>
