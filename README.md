@@ -1,6 +1,6 @@
 # WEBAPP
 
-Reddit / Twitter like website. Backend created with Python using the Flask module and the frontend is a mix of HTML and Bootstrap classes. <br />
+Reddit / Twitter like website. Backend created with Python using the Flask module and the frontend made with Bootstrap. <br />
 Backend connects to a SQLite database. <br />
 
 You can create an account, login and logout of your account. <br />
