@@ -5,14 +5,14 @@ Backend connects to a SQLite database. <br />
 
 <p><img src="https://github.com/luukasmakila/PYTHON-BLOG-APP/blob/master/unknown_2022.01.06-22.15_1.gif"/></p>
 
-USERS CAN:
-You can create an account, login and logout of your account. <br />
-You can create new posts and delete posts if you are authorized to do so. <br />
-You can comment on your own or other peoples posts. You can also delete comments if you are authorized to do so. <br />
-You can like / dislike a post. <br />
-You can view all the posts a certain user has made by clicking their name on one of their posts. <br />
+USERS CAN: <br />
+Create an account, login and logout of your account. <br />
+Create new posts and delete posts if you are authorized to do so. <br />
+Comment on your own or other peoples posts. You can also delete comments if you are authorized to do so. <br />
+Like / dislike a post. <br />
+View all the posts a certain user has made by clicking their name on one of their posts. <br />
 
-WHAT DID I LEARN:
+WHAT DID I LEARN: <br />
 How to authenticate users properly with Python  <br />
 How to connect a Python app to a database  <br />
 How to create a one-to-many relationship with database tables  <br />
